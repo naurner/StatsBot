@@ -12,9 +12,9 @@ nest_asyncio.apply()
 
 
 TOKEN = '7896122656:AAF6oVFW0fLLIOFP0vjskFJpP75R0HdHp_k'
-LAST_DATE_FILE = 'C:/Users/Lexa/Desktop/TelegramSudo/Files/last_date.txt'
-DATES_HISTORY_FILE = 'C:/Users/Lexa/Desktop/TelegramSudo/Files/dates_history.txt'
-EXCEL_PATH = "C:/Users/Lexa/Desktop/TelegramSudo/Files/Nicole_earn_data.xlsx"
+LAST_DATE_FILE = 'last_date.txt'
+DATES_HISTORY_FILE = 'dates_history.txt'
+EXCEL_PATH = "Nicole_earn_data.xlsx"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
