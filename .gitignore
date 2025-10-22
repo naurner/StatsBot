@@ -1,0 +1,82 @@
+# Telegram bot token
+telegram_token.txt
+
+# Data files
+*.xlsx
+*.xls
+*.csv
+data/*.xlsx
+data/*.xls
+data/*.csv
+
+# Configuration files with sensitive data
+dates_history.txt
+last_date.txt
+*.json
+!requirements.txt
+!README.md
+!LICENSE
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# ML models
+ml_models/*.pkl
+ml_models/*.joblib
+ml_models/*.h5
+ml_models/*.model
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Old deprecated files
+BirdEyeStats.py
+data/Nicole_earn_data.xlsx
+
