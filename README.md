@@ -1,247 +1,45 @@
 # Telegram Earnings Bot
 
-Telegram бот для отслеживания заработка чаттеров и управления статистикой.
+Telegram bot for freelancers and small businesses to track income and expenses. Parses free-form messages, stores transactions, and exports reports to Excel.
 
-## 📋 Описание
+## Features
 
-Бот автоматически парсит сообщения о заработке, сохраняет данные в Excel файл и предоставляет статистику по каждому чаттеру. Поддерживает работу с несколькими сменами в день, отслеживание дат выплат и заметки о клиентах.
+- **Natural language input** — type "received 5000" or "spent 1200 on supplies"
+- **Message parser** — extracts amount, category, and description automatically
+- **SQLite storage** — lightweight, no server needed
+- **Excel reports** — monthly breakdown with charts
+- **Category tracking** — auto-tags transactions by keyword patterns
+- **Balance summary** — running total on demand
 
-## 🚀 Установка
+## Stack
 
-### 1. Клонирование репозитория
+`Python` `aiogram` `SQLite` `openpyxl` `pytest`
+
+## Quick Start
+
 ```bash
-git clone <repository-url>
-cd TelegramSudo
-```
-
-### 2. Создание виртуального окружения
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Linux/Mac
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Установка зависимостей
-```bash
+git clone https://github.com/naurner/StatsBot
+cd StatsBot
 pip install -r requirements.txt
 ```
 
-### 4. Настройка токена бота
+Set your bot token in `config.py`:
 
-**Способ 1: Файл (рекомендуется для разработки)**
-```bash
-# Скопируйте пример файла
-copy telegram_token.txt.example telegram_token.txt
-
-# Откройте telegram_token.txt и вставьте токен вашего бота
+```python
+BOT_TOKEN = "your_token_here"
+DB_PATH   = "stats.db"
 ```
 
-**Способ 2: Переменная окружения (рекомендуется для продакшена)**
+Run migrations and start:
+
 ```bash
-# Windows
-set TELEGRAM_TOKEN=YOUR_BOT_TOKEN_HERE
-
-# Linux/Mac
-export TELEGRAM_TOKEN=YOUR_BOT_TOKEN_HERE
-```
-
-## 🎯 Использование
-
-### Запуск бота
-```bash
+python migrate.py
 python bot.py
 ```
 
-### Тестирование парсера (без запуска бота)
+## Tests
+
 ```bash
-python test_parser.py
+pytest test_parser.py -v
 ```
-
-### Миграция данных (при первом запуске)
-Если у вас есть старые файлы (Nicole_earn_data.xlsx, dates_history.txt):
-```bash
-python migrate.py
-```
-
-## 📱 Команды бота
-
-### `/profile [@username]`
-Показывает детальную статистику по чаттеру:
-- Заработок за текущий период
-- Заработок за предыдущий период
-- Общая статистика за все время
-- Среднюю прибыль за смену
-
-**Примеры:**
-```
-/profile              # Статистика для текущего пользователя
-/profile @username    # Статистика для конкретного пользователя
-```
-
-### `/infp <ссылка>`
-Показывает все заметки по ссылке на OnlyFans чат с датами.
-
-**Пример:**
-```
-/infp https://onlyfans.com/my/chats/chat/123456/
-```
-
-### `/setlast <дата_расчета> <дата_выплаты>`
-Устанавливает даты выплаты для расчета периодов.
-
-**Пример:**
-```
-/setlast 15.01.2025 20.01.2025
-```
-
-## 📝 Формат сообщений
-
-Бот автоматически обрабатывает сообщения в следующем формате:
-
-```
-Дата: 22.10
-Чаттер: @username
-Сколько заработано за смену: $150.50
-Дополнительные пометки: https://onlyfans.com/my/chats/chat/123456/ Заметка о клиенте
-```
-
-### Особенности формата:
-
-- **Дата:** Короткий формат `ДД.ММ` (год определяется автоматически)
-- **Вторая смена:** Добавьте `!2` после даты для второй смены в тот же день: `22.10 !2`
-- **Дополнительные чаттеры:** Можно указывать в пометках: `@user2 $50 @user3 $30`
-- **Заметки о клиентах:** Привязываются к ссылкам OnlyFans
-
-## 📂 Структура проекта
-
-```
-TelegramSudo/
-├── bot.py                      # Главный файл запуска бота
-├── config.py                   # Конфигурация и настройки
-├── message_parser.py           # Парсер сообщений и работа с данными
-├── handlers.py                 # Обработчики команд бота
-├── test_parser.py              # Тесты парсера
-├── migrate.py                  # Скрипт миграции данных
-├── requirements.txt            # Python зависимости
-├── .gitignore                  # Правила игнорирования Git
-├── README.md                   # Документация
-├── LICENSE                     # Лицензия MIT
-├── telegram_token.txt.example  # Пример файла токена
-└── data/                       # Папка с данными (не в Git)
-    ├── model.xlsx              # Excel файл с данными
-    ├── config.json             # JSON конфигурация
-    └── README.md               # Описание структуры
-```
-
-## 🔒 Безопасность
-
-Следующие файлы **не загружаются в Git** (см. `.gitignore`):
-- `telegram_token.txt` - токен бота
-- `data/model.xlsx` - данные о заработке
-- `data/config.json` - конфигурация с датами
-- `__pycache__/` - кэш Python
-- `.idea/` - настройки IDE
-
-## 📊 Данные
-
-### Excel файл (data/model.xlsx)
-Два листа:
-1. **заработок** - данные о заработке чаттеров по датам
-2. **инфо о покупателе** - заметки о клиентах с привязкой к ссылкам
-
-### Конфигурация (data/config.json)
-Структурированное хранение:
-```json
-{
-  "dates_history": [
-    {
-      "date_till": "2025-01-15T00:00:00",
-      "date_of_pay": "2025-01-20T00:00:00"
-    }
-  ],
-  "last_date": "2025-01-22T14:30:00",
-  "settings": {
-    "earnings_percentage": 0.15
-  }
-}
-```
-
-**Преимущества JSON формата:**
-- ✅ Структурированное хранение данных
-- ✅ Легко читается и редактируется
-- ✅ Автоматическая сортировка истории
-- ✅ Возможность добавлять новые настройки
-
-## ⚙️ Конфигурация
-
-Основные параметры в `config.py`:
-- `EARNINGS_PERCENTAGE = 0.15` - процент от заработка (15%)
-- `EXCEL_PATH = data/model.xlsx` - путь к файлу с данными
-- `CONFIG_FILE = data/config.json` - конфигурация
-
-## 🐛 Отладка
-
-Для включения debug режима измените уровень логирования в `bot.py`:
-```python
-logging.basicConfig(
-    level=logging.DEBUG,  # Было: logging.INFO
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-```
-
-## 🔄 Миграция со старой версии
-
-Если у вас есть файлы из старой версии:
-- `Nicole_earn_data.xlsx`
-- `dates_history.txt`
-- `last_date.txt`
-
-Запустите скрипт миграции:
-```bash
-python migrate.py
-```
-
-Он автоматически:
-1. Создаст папку `data/`
-2. Скопирует `Nicole_earn_data.xlsx` → `data/model.xlsx`
-3. Конвертирует текстовые файлы → `data/config.json`
-
-После проверки работоспособности старые файлы можно удалить.
-
-## 🤝 Вклад в проект
-
-1. Форкните репозиторий
-2. Создайте ветку для новой функции (`git checkout -b feature/amazing-feature`)
-3. Закоммитьте изменения (`git commit -m 'Add amazing feature'`)
-4. Запушьте в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
-
-## 📄 Лицензия
-
-Этот проект распространяется под лицензией MIT. См. файл `LICENSE` для деталей.
-
-## 📞 Поддержка
-
-При возникновении проблем:
-1. Проверьте логи бота
-2. Убедитесь, что токен бота настроен правильно
-3. Проверьте формат входящих сообщений
-4. Запустите `python test_parser.py` для проверки
-5. Создайте Issue в GitHub репозитории
-
-## 🔄 Обновления
-
-Для обновления зависимостей:
-```bash
-pip install --upgrade -r requirements.txt
-```
-
----
-
-**Примечание:** Убедитесь, что у бота есть права на чтение сообщений в группе/канале, где он используется.
-
 
